@@ -1,9 +1,9 @@
 import { ErrorRequestHandler } from "express";
 import config from "../config";
 import { ZodError } from "zod";
-import handleValidationError from "../errors/handleValidationError";
-import handleZodError from "../errors/handleZodError";
-import ApiError from "../errors/ApiError";
+import handleValidationError from "../../errors/handleValidationError";
+import handleZodError from "../../errors/handleZodError";
+import ApiError from "../../errors/ApiError";
 import { IErrorMessage } from "../../interfaces/common";
 
 const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
@@ -13,17 +13,23 @@ const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
   let message = "Something went wrong";
   let errorMessages: IErrorMessage[] = [];
 
+  // handling validation error from mongoose
   if (error?.name === "ValidationError") {
     const simplifiedError = handleValidationError(error);
     statusCode = simplifiedError.statusCode;
     message = simplifiedError.message;
     errorMessages = simplifiedError.errorMessages;
-  } else if (error instanceof ZodError) {
+  }
+  // handling zod error
+  else if (error instanceof ZodError) {
     const simplifiedError = handleZodError(error);
     statusCode = simplifiedError.statusCode;
     message = simplifiedError.message;
     errorMessages = simplifiedError.errorMessages;
-  } else if (error instanceof ApiError) {
+  }
+
+  // handling other errors
+  else if (error instanceof ApiError) {
     statusCode = error?.statusCode;
     message = error.message;
     errorMessages = error?.message
