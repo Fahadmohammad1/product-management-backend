@@ -10,5 +10,10 @@ export default [
   ...tseslint.configs.recommended,
   {
     ignores: ["**/node_modules/", ".env", "**/dist/"],
+    rules: {
+      "no-unused-vars": "error",
+      "no-undef": "error",
+      "@typescript-eslint/no-var-requires": 0,
+    },
   }
 ];
