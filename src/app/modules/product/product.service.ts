@@ -44,11 +44,43 @@ const getSingleProduct = async (id: string) => {
 };
 
 // update product
-const updateProduct = async (productData: IProduct) => {
-  return await Product.create(productData);
+const updateProduct = async (productId: string, data: Partial<IProduct>) => {
+  const { variants, inventory, ...productData } = data;
+
+  const updatedProductData = { ...productData };
+
+  if (variants?.length) {
+    variants.map((variant) => {
+      if (variant && Object.keys(variant).length > 0) {
+        Object.keys(variant).forEach((key) => {
+          const variantKey = `variant.${key}` as keyof Partial<IProduct>;
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (updatedProductData as any)[variantKey] =
+            variant[key as keyof typeof inventory];
+        });
+      }
+    });
+  }
+
+  if (inventory && Object.keys(inventory).length > 0) {
+    Object.keys(inventory).forEach((key) => {
+      const inventoryKey = `inventory.${key}` as keyof Partial<IProduct>;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (updatedProductData as any)[inventoryKey] =
+        inventory[key as keyof typeof inventory];
+    });
+  }
+  const result = await Product.updateOne(
+    { _id: productId },
+    updatedProductData
+  );
+
+  return result;
 };
-const deleteProduct = async (productData: IProduct) => {
-  return await Product.create(productData);
+
+// delete product
+const deleteProduct = async (productId: string) => {
+  return await Product.deleteOne({ _id: productId });
 };
 
 export const ProductService = {

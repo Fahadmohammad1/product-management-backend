@@ -69,10 +69,12 @@ const updateProduct = async (
   next: NextFunction
 ) => {
   try {
+    const { productId } = req.params;
     const productData = req.body;
-    const zodParsedData = ProductValidation.addProductSchema.parse(productData);
+    const zodParsedData =
+      ProductValidation.updateProductSchema.parse(productData);
 
-    const result = await ProductService.addProduct(zodParsedData);
+    const result = await ProductService.updateProduct(productId, productData);
 
     sendResponse(res, {
       success: true,
@@ -90,10 +92,9 @@ const deleteProduct = async (
   next: NextFunction
 ) => {
   try {
-    const productData = req.body;
-    const zodParsedData = ProductValidation.addProductSchema.parse(productData);
+    const { productId } = req.params;
 
-    const result = await ProductService.addProduct(zodParsedData);
+    const result = await ProductService.deleteProduct(productId);
 
     sendResponse(res, {
       success: true,
