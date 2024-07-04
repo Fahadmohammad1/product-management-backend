@@ -34,13 +34,16 @@ const getAllProducts = async (searchTerm: string) => {
   const result = await Product.aggregate(
     query.length ? query : [{ $match: {} }]
   );
+
   return result;
 };
 
 // get single product
-const getSingleProduct = async (productData: IProduct) => {
-  return await Product.create(productData);
+const getSingleProduct = async (id: string) => {
+  return await Product.findOne({ _id: id });
 };
+
+// update product
 const updateProduct = async (productData: IProduct) => {
   return await Product.create(productData);
 };

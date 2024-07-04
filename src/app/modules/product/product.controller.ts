@@ -42,20 +42,21 @@ const getAllProducts = async (
     next(error);
   }
 };
+
+// get single product
 const getSingleProduct = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const productData = req.body;
-    const zodParsedData = ProductValidation.addProductSchema.parse(productData);
+    const { productId } = req.params;
 
-    const result = await ProductService.addProduct(zodParsedData);
+    const result = await ProductService.getSingleProduct(productId);
 
     sendResponse(res, {
       success: true,
-      message: "Product created successfully!",
+      message: "Product fetched successfully!",
       data: result,
     });
   } catch (error) {
