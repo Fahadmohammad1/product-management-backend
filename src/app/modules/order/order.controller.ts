@@ -32,7 +32,9 @@ const getAllOrders = async (
 
     sendResponse(res, {
       success: true,
-      message: "Order created successfully!",
+      message: email
+        ? "Orders fetched successfully for user email!"
+        : "Orders fetched successfully!",
       data: result,
     });
   } catch (error) {

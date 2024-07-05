@@ -5,12 +5,6 @@ export type IErrorMessage = {
   message: string;
 };
 
-export type IErrorResponse = {
-  statusCode: number;
-  message: string;
-  errorMessages: IErrorMessage[];
-};
-
 type IApiResponse<T> = {
   success: boolean;
   message?: string | null;

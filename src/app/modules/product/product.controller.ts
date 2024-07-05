@@ -35,7 +35,9 @@ const getAllProducts = async (
 
     sendResponse(res, {
       success: true,
-      message: "Product fetched successfully!",
+      message: searchTerm
+        ? `Products matching search term '${searchTerm}' fetched successfully!`
+        : "Product fetched successfully!",
       data: result,
     });
   } catch (error) {
