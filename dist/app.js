@@ -12,6 +12,12 @@ app.use(express_1.default.json());
 app.use((0, cors_1.default)());
 // application routes
 app.use("/api", routes_1.default);
+app.use("*", (req, res) => {
+    res.send({
+        success: false,
+        message: "Route not found",
+    });
+});
 app.get("/", (req, res) => {
     res.send("Working fine");
 });

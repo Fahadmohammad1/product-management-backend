@@ -7,9 +7,7 @@ const handleZodError = (error) => {
             message: issue === null || issue === void 0 ? void 0 : issue.message,
         };
     });
-    const statusCode = 400;
     return {
-        statusCode,
         message: "Validation Error",
         errorMessages: errors,
     };

@@ -12,21 +12,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-/* eslint-disable no-console */
-const mongoose_1 = __importDefault(require("mongoose"));
-const app_1 = __importDefault(require("./app"));
-const config_1 = __importDefault(require("./app/config"));
-function main() {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            yield mongoose_1.default.connect(config_1.default.database_url);
-            app_1.default.listen(config_1.default.port, () => {
-                console.info(`App is listening on port ${config_1.default.port}`);
-            });
-        }
-        catch (error) {
-            console.error(error);
-        }
-    });
-}
-main();
+exports.OrderService = void 0;
+const ApiError_1 = __importDefault(require("../../../errors/ApiError"));
+const order_model_1 = require("./order.model");
+const createOrder = (orderInfo) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield order_model_1.Order.create(orderInfo);
+});
+const getAllOrders = (email) => __awaiter(void 0, void 0, void 0, function* () {
+    let query = {};
+    if (email) {
+        query = { email: email };
+    }
+    const result = yield order_model_1.Order.find(query);
+    if (result.length < 1) {
+        throw new ApiError_1.default("Order not found");
+    }
+    return result;
+});
+exports.OrderService = {
+    createOrder,
+    getAllOrders,
+};
