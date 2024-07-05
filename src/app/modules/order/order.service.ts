@@ -1,25 +1,9 @@
 import ApiError from "../../../errors/ApiError";
-import { Product } from "../product/product.model";
 import { IOrder } from "./order.interface";
 import { Order } from "./order.model";
 
 const createOrder = async (orderInfo: IOrder) => {
-  const findProduct = await Product.findOne({ _id: orderInfo.productId });
-
-  if (findProduct && orderInfo.quantity > findProduct?.inventory?.quantity) {
-    throw new ApiError("Insufficient quantity available in inventory");
-  }
-
-  const result = await Order.create(orderInfo);
-
-  if (result && findProduct) {
-    await Product.updateOne(
-      { _id: orderInfo.productId },
-      { $inc: { "inventory.quantity": -orderInfo.quantity } }
-    );
-  }
-
-  return result;
+  return await Order.create(orderInfo);
 };
 
 const getAllOrders = async (email: string) => {

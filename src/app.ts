@@ -11,6 +11,13 @@ app.use(cors());
 // application routes
 app.use("/api", routes);
 
+app.use("*", (req, res) => {
+  res.send({
+    success: false,
+    message: "Route not found",
+  });
+});
+
 app.get("/", (req, res) => {
   res.send("Working fine");
 });
