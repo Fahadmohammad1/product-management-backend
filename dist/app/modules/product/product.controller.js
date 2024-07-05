@@ -68,7 +68,7 @@ const updateProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, func
         const result = yield product_service_1.ProductService.updateProduct(productId, productData);
         (0, common_1.sendResponse)(res, {
             success: true,
-            message: "Product created successfully!",
+            message: "Product updated successfully!",
             data: result,
         });
     }

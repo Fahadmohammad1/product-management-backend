@@ -14,6 +14,7 @@ exports.ProductSchema = new mongoose_1.Schema({
     name: {
         type: String,
         required: true,
+        unique: true,
     },
     description: {
         type: String,
@@ -42,4 +43,4 @@ exports.ProductSchema = new mongoose_1.Schema({
 }, {
     timestamps: true,
 });
-exports.Product = (0, mongoose_1.model)("Student", exports.ProductSchema);
+exports.Product = (0, mongoose_1.model)("Product", exports.ProductSchema);

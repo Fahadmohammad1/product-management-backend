@@ -75,6 +75,7 @@ const getSingleProduct = (id) => __awaiter(void 0, void 0, void 0, function* () 
 const updateProduct = (productId, data) => __awaiter(void 0, void 0, void 0, function* () {
     const { variants, inventory } = data, productData = __rest(data, ["variants", "inventory"]);
     const updatedProductData = Object.assign({}, productData);
+    // updating inventory
     if (inventory && Object.keys(inventory).length > 0) {
         Object.keys(inventory).forEach((key) => {
             const inventoryKey = `inventory.${key}`;
@@ -83,10 +84,19 @@ const updateProduct = (productId, data) => __awaiter(void 0, void 0, void 0, fun
                 inventory[key];
         });
     }
+    // updating variant
     if (variants && variants.length > 0) {
         const findProduct = yield product_model_1.Product.findById(productId).lean();
         if (findProduct && findProduct.variants) {
-            updatedProductData["variants"] = [...findProduct.variants, ...variants];
+            const newVariants = variants.filter((variant) => !findProduct.variants.some((existingVariant) => existingVariant.type === variant.type &&
+                existingVariant.value === variant.value));
+            updatedProductData["variants"] = [
+                ...findProduct.variants,
+                ...newVariants,
+            ];
+        }
+        else {
+            updatedProductData["variants"] = variants;
         }
     }
     const result = yield product_model_1.Product.findByIdAndUpdate(productId, { $set: updatedProductData }, { new: true });

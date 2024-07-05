@@ -103,12 +103,22 @@ const updateProduct = async (productId: string, data: Partial<IProduct>) => {
     { new: true }
   );
 
+  if (!result) {
+    throw new ApiError("Failed to update product");
+  }
+
   return result;
 };
 
 // delete product
 const deleteProduct = async (productId: string) => {
-  return await Product.deleteOne({ _id: productId });
+  const result = await Product.deleteOne({ _id: productId });
+
+  if (!result) {
+    throw new ApiError("Failed to fetch product");
+  }
+
+  return result;
 };
 
 export const ProductService = {

@@ -65,6 +65,8 @@ const getSingleProduct = async (
     next(error);
   }
 };
+
+// udpate product
 const updateProduct = async (
   req: Request,
   res: Response,
@@ -86,6 +88,7 @@ const updateProduct = async (
   }
 };
 
+// delete product
 const deleteProduct = async (
   req: Request,
   res: Response,
@@ -94,12 +97,12 @@ const deleteProduct = async (
   try {
     const { productId } = req.params;
 
-    const result = await ProductService.deleteProduct(productId);
+    await ProductService.deleteProduct(productId);
 
     sendResponse(res, {
       success: true,
-      message: "Product created successfully!",
-      data: result,
+      message: "Product deleted successfully!",
+      data: null,
     });
   } catch (error) {
     next(error);
