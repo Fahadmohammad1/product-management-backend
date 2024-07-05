@@ -73,8 +73,6 @@ const updateProduct = async (
   try {
     const { productId } = req.params;
     const productData = req.body;
-    const zodParsedData =
-      ProductValidation.updateProductSchema.parse(productData);
 
     const result = await ProductService.updateProduct(productId, productData);
 
