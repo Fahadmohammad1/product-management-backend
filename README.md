@@ -1,11 +1,11 @@
-### Product Management - Ecommerce
+## Product Management - Ecommerce
 
-## Getting Started
+### Getting Started
 
 1. Clone the Repository:
 
 ```
-    [text](https://github.com/Fahadmohammad1/product-management-backend.git)
+    https://github.com/Fahadmohammad1/product-management-backend.git
 ```
 
 2. Navigate to the project directory:

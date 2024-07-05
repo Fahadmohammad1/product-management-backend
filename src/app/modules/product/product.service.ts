@@ -66,6 +66,7 @@ const updateProduct = async (productId: string, data: Partial<IProduct>) => {
 
   const updatedProductData: Partial<IProduct> = { ...productData };
 
+  // updating inventory
   if (inventory && Object.keys(inventory).length > 0) {
     Object.keys(inventory).forEach((key) => {
       const inventoryKey = `inventory.${key}` as keyof Partial<IProduct>;
@@ -75,10 +76,24 @@ const updateProduct = async (productId: string, data: Partial<IProduct>) => {
     });
   }
 
+  // updating variant
   if (variants && variants.length > 0) {
     const findProduct = await Product.findById(productId).lean();
     if (findProduct && findProduct.variants) {
-      updatedProductData["variants"] = [...findProduct.variants, ...variants];
+      const newVariants = variants.filter(
+        (variant) =>
+          !findProduct.variants.some(
+            (existingVariant) =>
+              existingVariant.type === variant.type &&
+              existingVariant.value === variant.value
+          )
+      );
+      updatedProductData["variants"] = [
+        ...findProduct.variants,
+        ...newVariants,
+      ];
+    } else {
+      updatedProductData["variants"] = variants;
     }
   }
 

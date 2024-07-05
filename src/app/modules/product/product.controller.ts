@@ -78,7 +78,7 @@ const updateProduct = async (
 
     sendResponse(res, {
       success: true,
-      message: "Product created successfully!",
+      message: "Product updated successfully!",
       data: result,
     });
   } catch (error) {
